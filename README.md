@@ -2,7 +2,12 @@
 
 ## Introducing Lapa LLM v0.1.2 — the most efficient Ukrainian open-source language model
 
-25.10.2025
+
+
+> Demo page: https://huggingface.co/spaces/lapa-llm/lapa  
+> Link to Lapa Models: https://huggingface.co/collections/lapa-llm/lapa-v012-release  
+
+> TBD: Datasets would be published soon.
 
 Today, we proudly present Lapa LLM — a cutting-edge open large language model based on Gemma-3-12B with a focus on Ukrainian language processing. The project is the result of many months of work by a team of Ukrainian researchers in artificial intelligence from the Ukrainian Catholic University, AGH University of Krakow, Igor Sikorsky Kyiv Polytechnic Institute, and Lviv Polytechnic, who united to create the best model for Ukrainian language processing.
 
