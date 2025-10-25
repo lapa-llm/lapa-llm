@@ -1,0 +1,137 @@
+# NOTE: This is not the final version of the config file. Some parameters are to be filled in later.
+
+base_model: le-llm/lapa-12b-pt
+# tokenizer_config: le-llm/tokenizer # TODO: add correct link
+
+#load_in_4bit: true
+auto_resume_from_checkpoints: false
+# gemma3 doesn't seem to play nice with ddp
+ddp_find_unused_parameters: true
+
+
+remove_unused_columns: false
+#chat_template: gemma3
+eot_tokens:
+  - <end_of_turn>
+
+shuffle_merged_datasets: true
+shuffle_before_merging_datasets: true
+datasets:
+  - path: le-llm/hermes3-uk
+    type: chat_template
+    field_messages: conversations
+    drop_system_message: true
+    message_property_mappings:
+      role: from
+      content: value
+  - path: le-llm/wiki-instruction-dialogs
+    type: chat_template
+    field_messages: conversations
+    drop_system_message: true
+    message_property_mappings:
+      role: from
+      content: value
+  - path: le-llm/lapa-persona-qa
+    type: chat_template
+    field_messages: messages
+    drop_system_message: true
+    message_property_mappings:
+      role: from
+      content: content
+  - path: le-llm/lang-uk-fiction-gec-dialogs
+    type: chat_template
+    field_messages: conversations
+    drop_system_message: true
+    message_property_mappings:
+      role: from
+      content: value
+  - path: le-llm/fiftyfive-best
+    type: chat_template
+    field_messages: conversations
+    drop_system_message: true
+    message_property_mappings:
+      role: from
+      content: value
+  - path: le-llm/openthoughts_no_think
+    type: chat_template
+    field_messages: conversations
+    drop_system_message: true
+    message_property_mappings:
+      role: from
+      content: value
+  # TODO: add the rest of datasets
+  
+ 
+
+# val_set_size: 0.001
+
+ddp_timeout: 7200
+dataset_processes: 64
+
+
+dataset_prepared_path: last_run_prepared_instructions
+output_dir: ./outputs/lapa-v.0.1.2-instructions
+
+
+sequence_len: 32768
+sample_packing: true
+pad_to_sequence_len: true
+train_on_inputs: true
+
+dp_shard_size: 8
+
+# The number of times to replicate the sharded model (DDP dimension).
+dp_replicate_size: 6
+
+plugins:
+  - axolotl.integrations.liger.LigerPlugin
+liger_rope: true
+liger_rms_norm: true
+liger_glu_activation: true
+liger_layer_norm: true
+liger_fused_linear_cross_entropy: true
+
+wandb_project: lapa-12b-instructions
+wandb_entity:
+wandb_watch:
+wandb_name:
+wandb_log_model:
+
+gradient_accumulation_steps: 4
+micro_batch_size: 1
+num_epochs: 1
+optimizer: adamw_torch_fused
+lr_scheduler: warmup_stable_decay
+learning_rate: 5e-5
+lr_scheduler_kwargs: {"num_decay_steps": 450}
+max_grad_norm: 1.0
+
+
+bf16: auto
+# fp16:
+tf32: false # TODO: double check precision impact
+
+fsdp:
+  - full_shard
+  - auto_wrap
+fsdp_config:
+  fsdp_version: 2
+  fsdp_offload_params: false
+  fsdp_cpu_ram_efficient_loading: false
+  fsdp_auto_wrap_policy: TRANSFORMER_BASED_WRAP
+  fsdp_transformer_layer_cls_to_wrap: Gemma3DecoderLayer
+  fsdp_state_dict_type: FULL_STATE_DICT
+  fsdp_sharding_strategy: FULL_SHARD
+  fsdp_reshard_after_forward: true
+  fsdp_activation_checkpointing: true
+
+
+logging_steps: 1
+flash_attention: true
+
+
+warmup_steps: 450
+include_tokens_per_second: true
+
+save_steps: 100
+save_total_limit: 6

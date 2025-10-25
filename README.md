@@ -7,7 +7,10 @@
 > Demo page: https://huggingface.co/spaces/lapa-llm/lapa  
 > Link to Lapa Models: https://huggingface.co/collections/lapa-llm/lapa-v012-release  
 
-> TBD: Datasets would be published soon.
+> You can find first 5 datasets out of 25 here in HuggingFace collection: https://huggingface.co/collections/lapa-llm/lapa-v012-release
+> TBD: Rest of the datasets would be published soon.
+> Preliminary training code in this folder (we're polishing final configs): [./training/README.md](training/README.md).
+
 
 Today, we proudly present Lapa LLM — a cutting-edge open large language model based on Gemma-3-12B with a focus on Ukrainian language processing. The project is the result of many months of work by a team of Ukrainian researchers in artificial intelligence from the Ukrainian Catholic University, AGH University of Krakow, Igor Sikorsky Kyiv Polytechnic Institute, and Lviv Polytechnic, who united to create the best model for Ukrainian language processing.
 
