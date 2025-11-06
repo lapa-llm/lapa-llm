@@ -2,17 +2,16 @@
 # install llama.cpp with CUDA support
 
 ```
-git clone https://github.com/ggml-org/llama.cpp.git
+git clone https://github.com/ggml-org/llama.cpp.git -b b6962
 cd llama.cpp
-cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=OFF -j 8
+cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=OFF
 cmake --build build --config Release -j 8
 ```
 
 ```
 cd ./models
 hf download lapa-llm/lapa-v0.1.2-instruct --local-dir ./lapa-12b-it
-hf download lapa-llm/tokenizer --local-dir ./lapa-12b-it --include uk_tokenizer.model
-mv ./lapa-12b-it/uk_tokenizer.model ./lapa-12b-it/tokenizer.model
+hf download google/gemma-3-12b-it --local-dir ./lapa-12b-it --include tokenizer.model
 
 cd ..
 
@@ -20,7 +19,10 @@ cd ..
 python3 -m pip install -r requirements.txt
 
 # convert the model to ggml FP16 format
-python3 convert_hf_to_gguf.py ./models/lapa-12b-it/
+cd ..
+python3 convert_hf_to_gguf.py ./llama.cpp/models/lapa-12b-it/
+
+cd ./llama.cpp
 
 # TODO: use llama-matrix for calibration
 # ./build/bin/llama-imatrix
@@ -34,4 +36,8 @@ python3 convert_hf_to_gguf.py ./models/lapa-12b-it/
 
 ./build/bin/llama-quantize ./models/lapa-12b-it/lapa-12B-it-F16.gguf ./models/lapa-12b-it/lapa-v0.1.2-instruct-Q8_0.gguf Q8_0
 
+```
+
+```
+./build/bin/llama-server --model ./models/lapa-12b-it/lapa-v0.1.2-instruct-Q4_K_M.gguf --port 8080 --threads 8 --ctx_size 8192 --batch_size 512
 ```
