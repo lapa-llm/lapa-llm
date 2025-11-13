@@ -1,0 +1,99 @@
+base_model: lapa-llm/gemma-3-12b-pt-focus-matt-layer12-fullvocab # transferred model to new tokenizer
+tokenizer_config: lapa-llm/tokenizer
+
+ddp_find_unused_parameters: false #Chat-GPT recomendation: Set this to false unless you know there are unused parameters. It introduces overhead during distributed training.
+shuffle_merged_datasets: false
+shuffle_before_merging_datasets: false # Shuffle each dataset individually before merging them
+#Need to discuss how to load datas (datasets / pretraining_dataset)
+# datasets:
+#   - path: le-llm/pretraining-data
+#     type:
+#   - path: le-llm/high-estimated-pretraining-data
+#     type:
+# pretrain_multipack_buffer_size: 10000
+# dataset_processes: 64
+#dataset_keep_in_memory: true
+# dataloader_num_workers: 8
+# dataloader_prefetch_factor: 9
+    
+output_dir: ./outputs/lapa-12b-pt
+dataset_prepared_path: ./datasets/prepared
+
+datasets:
+  # use pretraining data from huggingface https://huggingface.co/collections/lapa-llm/lapa-v012-pretraining
+
+sequence_len: 8192
+sample_packing: true
+pad_to_sequence_len: true
+train_on_inputs: true #maybe unnecessary for pretraining
+
+# Number of GPUs for Tensor Parallelism.
+
+deepspeed: #Need to discuss deepspeed configuratiin, I recommend to use deepspeed zero2 for faster training
+#My deepspeed Zero2 config:
+# {
+#   "zero_optimization": {
+#     "stage": 2,
+#     "overlap_comm": true,
+#     "contiguous_gradients": true,
+#     "sub_group_size": 0,
+#     "reduce_scatter": true,
+#     "allgather_bucket_size": 500000000,
+#     "reduce_bucket_size": 500000000
+#   },
+#   "bf16": { "enabled": true },
+#   "gradient_accumulation_steps": "auto",
+#   "gradient_clipping": "auto",
+#   "train_batch_size": "auto",
+#   "train_micro_batch_size_per_gpu": "auto",
+#   "wall_clock_breakdown": false
+# }
+deepcompile: true 
+
+plugins:
+  - axolotl.integrations.liger.LigerPlugin
+liger_rope: true
+liger_rms_norm: true
+liger_glu_activation: true
+liger_layer_norm: true
+liger_fused_linear_cross_entropy: true
+
+wandb_project: gemma-3-12b-pretraining
+wandb_entity:
+wandb_watch:
+wandb_name:
+wandb_log_model:
+
+gradient_accumulation_steps: 1
+micro_batch_size: 1
+num_epochs: 1
+#max_steps: 150_000 # better to avoid using max_steps and use num_epochs instead if will be able to use not streaming dataset
+save_steps: 5000 #(around 15-20 checkpoints). Taking into account that we have a  problem with resuming training from checkpoint, let's use checkpointing for tracking training in different stages
+save_total_limit: 30
+
+ddp_timeout: 7200 # TODO: timeout of 2 hours for waiting for nodes
+
+gradient_checkpointing: true #not find the way to avoid using this due GPU memory limitations. potentially set in false - speed-up training on 20-30%
+#gradient_checkpointing_kwargs:
+#  use_reentrant: false
+logging_steps: 10
+flash_attention: true
+
+#Some colculations for our case based on https://arxiv.org/pdf/2507.07101
+optimizer: adamw_torch_fused #adamw_bnb_8bit
+warmup_ratio: 0.1
+lr_scheduler: warmup_stable_decay
+lr_scheduler_kwargs: {
+  "num_decay_steps": ?, # 30% in KIMI K2 paper . Should be calculated based on size of good dataset. Recommended Decay (~32%) around 45k steps for our case
+  "min_lr_ratio": 0.05} 
+
+learning_rate: 1.0e-5
+max_grad_norm: 1.0
+# adamw hyperparams
+adam_epsilon: 1e-6 #bf16 edge-cases
+# adamw hyperparams
+adam_beta1: 0.9
+# adamw hyperparams
+# adam_beta2: 0.977543
+adam_beta2: 0.977543
+weight_decay: 0.005
