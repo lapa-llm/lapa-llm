@@ -84,4 +84,16 @@ Code: https://github.com/lapa-llm/lapa-llm
 
 Subscribe to the Telegram channel for further news about the project: https://t.me/pehade_blog
 
-### Team
+### Citation
+
+```
+# temporary
+@software{Paniv_Lapa_LLM_v0_1_2_2025,
+author = {Paniv, Yurii and Didenko, Bohdan and Haltiuk, Mykola and Humennyy, Vladyslav and Kravchenko, Andrian and Kyslyi, Roman and Makovska, Viktoriia and Orlovskyi, Artem and Ruban, Bohdan and Rudko, Maksym-Yurii and Senyk, Anastasiia and Drushchak, Nazarii and Chaplynskyi, Dmytro and Romanyshyn, Mariana},
+month = oct,
+title = {{Lapa LLM v0.1.2 — the most efficient Ukrainian open-source language model}},
+url = {https://github.com/lapa-llm/lapa-llm/},
+version = {0.1.2},
+year = {2025}
+}
+```
