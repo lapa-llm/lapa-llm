@@ -72,6 +72,7 @@ Lapa LLM opens wide possibilities for:
 - We are collecting community feedback on the model's performance, so we look forward to receiving it on GitHub or HuggingFace!
 - Collecting additional datasets for image processing in Ukrainian
 - Collecting additional datasets for instruction following and programming
+- Implementing additional alignment via machine unlearning techniques towards sensetive topics and collecting data for this step via red teaming
 
 ### Acknowledgment to Sponsors
 
