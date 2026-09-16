@@ -88,13 +88,31 @@ Subscribe to the Telegram channel for further news about the project: https://t.
 ### Citation
 
 ```
-# temporary
-@software{Paniv_Lapa_LLM_v0_1_2_2025,
-author = {Paniv, Yurii and Didenko, Bohdan and Haltiuk, Mykola and Humennyy, Vladyslav and Kravchenko, Andrian and Kyslyi, Roman and Makovska, Viktoriia and Orlovskyi, Artem and Ruban, Bohdan and Rudko, Maksym-Yurii and Senyk, Anastasiia and Drushchak, Nazarii and Chaplynskyi, Dmytro and Romanyshyn, Mariana},
-month = oct,
-title = {{Lapa LLM v0.1.2 — the most efficient Ukrainian open-source language model}},
-url = {https://github.com/lapa-llm/lapa-llm/},
-version = {0.1.2},
-year = {2025}
+@inproceedings{paniv-etal-2026-data,
+    title = "Data-Efficient Adaptation of Multilingual {LLM}s to {U}krainian",
+    author = "Paniv, Yurii  and
+      Didenko, Bohdan  and
+      Haltiuk, Mykola  and
+      Humennyy, Vladyslav  and
+      Kravchenko, Andrian  and
+      Kyslyi, Roman  and
+      Makovska, Viktoriia  and
+      Orlovskyi, Artem  and
+      Ruban, Bohdan  and
+      Rudko, Maksym-Yurii  and
+      Senyk, Anastasiia  and
+      Drushchak, Nazarii  and
+      Chaplynskyi, Dmytro  and
+      Romanyshyn, Mariana",
+    editor = "Romanyshyn, Mariana",
+    booktitle = "Proceedings of the Fifth {U}krainian Natural Language Processing Conference ({UNLP} 2026)",
+    month = may,
+    year = "2026",
+    address = "Lviv, Ukraine",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2026.unlp-1.14/",
+    pages = "155--168",
+    ISBN = "979-8-89176-359-3",
+    abstract = "Adapting large language models to low-resource languages presents three interconnected challenges: inefficient tokenization, scarcity of high-quality annotated data, and limited resources for instruction tuning. We present a reproducible approach that addresses each challenge using data-centric methods that primarily rely on unlabeled text corpora, parallel translation data, and a multilingual base model. Our approach combines (1) vocabulary surgery for tokenizer adaptation without full retraining, (2) cross-lingual transfer of quality classifiers via translation, enabling filtering without target-language annotations, and (3) generation of instruction data through translation, task conversion, and targeted synthesis. We validate this recipe by adapting Gemma-3-12B to Ukrainian. {\%}, producing Lapa-12BOur pretrained model achieves top performance on Ukrainian benchmarks, while our instruction-tuned variant demonstrates strong performance on translation (33 BLEU on FLORES), summarization, and question-answering tasks, while requiring 1.5x fewer tokens than the original model for the same text. We release all models, datasets, classifiers, and code to enable replication for other languages."
 }
 ```
